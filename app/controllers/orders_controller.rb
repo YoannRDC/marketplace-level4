@@ -1,9 +1,10 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
 
   # GET /orders or /orders.json
   def index
-    @orders = Order.all
+    @orders = Order.select{|o| o.user == current_user}
   end
 
   # GET /orders/1 or /orders/1.json
@@ -22,6 +23,19 @@ class OrdersController < ApplicationController
   # POST /orders or /orders.json
   def create
     @order = Order.new(order_params)
+
+    @orders = Order.all.order('price_per_btc DESC')
+    @sells = @orders.select{|o| o.side == "sell"}
+    @buys = @orders.select{|o| o.side == "buy"}
+
+    if (@order.side == "sell" && @order.price_per_btc < @buys.first.price_per_btc) 
+      error_msg = ": Sell orders must be higher than highest 'buy' order price: " + @buys.first.price_per_btc.to_s
+      @order.errors.add(:invalid_order_range, error_msg)
+      flash[:notice] = @order.errors.full_messages
+      redirect_to root_path(@order)
+      return
+    end
+
     @order.user = current_user
 
     respond_to do |format|
@@ -56,6 +70,16 @@ class OrdersController < ApplicationController
       format.html { redirect_to orders_url, notice: "Order was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  # returns the average price between the closest buy and sell orders.
+  def get_average_price
+    @orders = Order.all.order('price_per_btc DESC')
+
+    @sells = @orders.select{|o| o.side == "sell"}
+    @buys = @orders.select{|o| o.side == "buy"}
+
+    return (@sells.last.price_per_btc + @buys.first.price_per_btc)/2
   end
 
   private

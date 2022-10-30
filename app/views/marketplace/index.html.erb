@@ -1,7 +1,47 @@
-<h1> Market place </h1>
+<h1 class="text-center"> Market place </h1>
 
-<h3> Sell orders </h3>
+<div class="container">
+    <h1>Sell orders</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Side</th>
+            <th>Price</th>
+            <th>Amount of BTC</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @sells.each do |order| %> 
+            <tr>
+                <td><%= order.side %></td>
+                <td><%= order.price_per_btc %></td>
+                <td><%= order.btc_amount %></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+</div>
 
-<h3> Average price: </h3>
+<h2 class="text-center">Average order price: <%= @avg_price%> </h2>
 
-<h3> Buy orders </h3>
+<div class="container">
+    <h1>Buy orders</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Side</th>
+            <th>Price</th>
+            <th>Amount of BTC</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @buys.each do |order| %> 
+            <tr>
+                <td><%= order.side %></td>
+                <td><%= order.price_per_btc %></td>
+                <td><%= order.btc_amount %></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+</div>

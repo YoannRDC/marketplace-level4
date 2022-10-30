@@ -9,11 +9,12 @@
 <h3>
     side: <%= @order.side %>
 </h3>
-<%= render @order %>
 
 <div>
   <%= link_to "Edit this order", edit_order_path(@order) %> |
   <%= link_to "Back to orders", orders_path %>
-
+</div>
+<br>
+<div>
   <%= button_to "Destroy this order", @order, method: :delete %>
 </div>
