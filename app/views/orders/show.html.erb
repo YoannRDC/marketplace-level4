@@ -1,0 +1,19 @@
+<p style="color: green"><%= notice %></p>
+
+<h3>
+    price: <%= @order.price_per_btc %>
+</h3>
+<h3>
+    amount: <%= @order.btc_amount %>
+</h3>
+<h3>
+    side: <%= @order.side %>
+</h3>
+<%= render @order %>
+
+<div>
+  <%= link_to "Edit this order", edit_order_path(@order) %> |
+  <%= link_to "Back to orders", orders_path %>
+
+  <%= button_to "Destroy this order", @order, method: :delete %>
+</div>
