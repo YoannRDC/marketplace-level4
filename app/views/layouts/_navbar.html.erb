@@ -13,7 +13,7 @@
           <li><%= link_to "Orders", orders_path, class:"nav-link" %></li>
         </li>        
         <% end %>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown me-auto, mb-2, mb-lg-0, me-2">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Account
           </a>
@@ -27,6 +27,13 @@
             <% end %>
           </ul>
         </li>
+        <% if user_signed_in? %>
+        <li class="nav-item">
+          <li class="navbar-text me-auto, mb-2, mb-lg-0, me-2">Eur: <%= current_user.eur_balance %></li>
+          <li class="navbar-text me-auto, mb-2, mb-lg-0, me-2">BTC: <%= current_user.btc_balance %></li>
+          <li class="navbar-text me-auto, mb-2, mb-lg-0, me-2"><%= current_user.email %></li>
+        </li>        
+        <% end %>
       </ul>
     </div>
   </div>

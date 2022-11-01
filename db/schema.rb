@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_30_094629) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_30_221216) do
   create_table "orders", force: :cascade do |t|
     t.decimal "price_per_btc", precision: 11, scale: 2
     t.decimal "btc_amount", precision: 15, scale: 8
@@ -18,6 +18,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_30_094629) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "state", default: 0
+    t.integer "buy_type", default: 0
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -29,6 +31,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_30_094629) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "eur_balance", precision: 11, scale: 2, default: "0.0"
+    t.decimal "btc_balance", precision: 15, scale: 8, default: "0.0"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

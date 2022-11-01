@@ -8,6 +8,7 @@
             <th>Side</th>
             <th>Price</th>
             <th>Amount of BTC</th>
+            <th>User email</th>
         </tr>
         </thead>
         <tbody>
@@ -16,6 +17,7 @@
                 <td><%= order.side %></td>
                 <td><%= order.price_per_btc %></td>
                 <td><%= order.btc_amount %></td>
+                <td><%= order.user.email %></td>
             </tr>
         <% end %>
         </tbody>
@@ -32,6 +34,7 @@
             <th>Side</th>
             <th>Price</th>
             <th>Amount of BTC</th>
+            <th>User email</th>
         </tr>
         </thead>
         <tbody>
@@ -40,8 +43,57 @@
                 <td><%= order.side %></td>
                 <td><%= order.price_per_btc %></td>
                 <td><%= order.btc_amount %></td>
+                <td><%= order.user.email %></td>
             </tr>
         <% end %>
+        </tbody>
+    </table>
+</div>
+<br>
+<div class="container">
+    <h1>Filled orders</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Side</th>
+            <th>Price</th>
+            <th>Amount of BTC</th>
+            <th>Buy type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @filled.each do |order| %> 
+            <tr>
+                <td><%= order.side %></td>
+                <td><%= order.price_per_btc %></td>
+                <td><%= order.btc_amount %></td>
+                <td><%= order.buy_type %></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+</div>
+<br>
+<div class="container">
+    <h1>Market place stats</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Value [EUR : BTC]</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> Total (Market place)</td>
+                <td><%= @total_market_eur %> : <%= @total_market_btc %></td>
+            </tr>          
+            <% @users.each do |user| %> 
+                <tr>
+                    <td><%= user.email %> balance</td>
+                    <td><%= user.eur_balance %> : <%= user.btc_balance %></td>
+                </tr>
+            <% end %>
         </tbody>
     </table>
 </div>
