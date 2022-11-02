@@ -9,19 +9,45 @@
             <th>Price</th>
             <th>Amount of BTC</th>
             <th>Details</th>
+            <th>Date of creation</th>
         </tr>
         </thead>
         <tbody>
-        <% @orders.each do |order| %> 
+        <% @orders_request.each do |order| %> 
             <tr>
                 <td><%= order.side %></td>
                 <td><%= order.price_per_btc %></td>
                 <td><%= order.btc_amount %></td>
                 <td><%= link_to "View order", order %></td>
+                <td><%= order.created_at %></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+</div>
+<h2 class="text-center"><%= link_to "New order", new_order_path %></h2>
+<br>
+<div class="container">
+    <h1>Your history orders</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Side</th>
+            <th>Price</th>
+            <th>Amount of BTC</th>
+            <th>Date of creation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @orders_request.each do |order| %> 
+            <tr>
+                <td><%= order.side %></td>
+                <td><%= order.price_per_btc %></td>
+                <td><%= order.btc_amount %></td>
+                <td><%= order.created_at %></td>
             </tr>
         <% end %>
         </tbody>
     </table>
 </div>
 
-<h2 class="text-center"><%= link_to "New order", new_order_path %></h2>
