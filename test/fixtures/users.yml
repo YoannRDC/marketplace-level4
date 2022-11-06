@@ -4,8 +4,15 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+
+fee_user: 
+  email: 'fee@user.com'
+  eur_balance: 0
+  btc_balance: 0
+
+<% 3.times do |n| %>
+user_<%= n %>:
+  email: <%= "user#{n}@user.com" %>
+  eur_balance: 100000
+  btc_balance: 3
+<% end %>

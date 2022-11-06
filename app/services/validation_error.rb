@@ -1,9 +1,8 @@
 class ValidationError
 
-
     def initialize()
         @errors = Array.new
-     end
+    end
 
     def is_valid()
         return @errors.empty?()

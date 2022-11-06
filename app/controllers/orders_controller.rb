@@ -1,6 +1,11 @@
+require 'singleton'
+
 class OrdersController < ApplicationController
   before_action :set_order, only: %i[ show edit update destroy ]
   before_action :authenticate_user!
+
+  # Market place fees
+  FEES = 0.0000 
 
   # GET /orders or /orders.json
   def index
@@ -152,22 +157,39 @@ class OrdersController < ApplicationController
       # assert order request validity
       # ****
 
-      # TODO: check user total request order is not above it btc balance
-      # TODO: check user total request order is not above it eur balance
-
       # assert user eur balance is enough
       if (@order.side == 'buy')
+        # euros for this order
         eur_to_spend = @order.btc_amount * @order.price_per_btc
-        if current_user.eur_balance < eur_to_spend
-          error_msg = ": Euros to spend: " + eur_to_spend.to_s + "€, is above your balance: " + current_user.eur_balance.to_s
+
+        # Sum of euros for previous orders.
+        buy_orders_eur_sum = eur_to_spend
+        created_user_orders = Order.where(user:current_user, side:'buy', state:'created', buy_type: 'request')
+        created_user_orders.each do |order|
+          buy_orders_eur_sum += (order.btc_amount * order.price_per_btc)
+        end
+
+        if current_user.eur_balance < buy_orders_eur_sum
+          error_msg = ": Your total request order balance would exceed your euros balance. Orders sum:" + buy_orders_eur_sum + "€. ".
           ve.add_string(error_msg)
         end
       end
 
       # assert user BTC balance is enough
       if (@order.side == 'sell')
-        if current_user.btc_balance < @order.btc_amount
-          error_msg = ": BTC to spend: " + @order.btc_amount.to_s + ", is above your balance: " + current_user.btc_balance.to_s
+
+        # btc for this order
+        sell_orders_btc_sum = @order.btc_amount
+
+        # Sum of btc for previous orders.
+        created_user_orders = Order.where(user:current_user, side:'sell', state:'created', buy_type: 'request')
+        created_user_orders.each do |order|
+          sell_orders_btc_sum += order.btc_amount
+        end
+        logger.debug "@sell_orders_btc_sum: #{sell_orders_btc_sum}"
+
+        if current_user.btc_balance < sell_orders_btc_sum
+          error_msg = ": Your total request order balance would exceed your btc balance. Orders sum:" + sell_orders_btc_sum.to_s + " BTC. "
           ve.add_string(error_msg)
         end
       end
@@ -203,18 +225,11 @@ class OrdersController < ApplicationController
 
         current_case = "init"
 
-        # user can buy the full cheapest sell order
-        if (btc_to_buy >= cheapest_sell_order.btc_amount && current_user.eur_balance >= (cheapest_sell_order.btc_amount * cheapest_sell_order.price_per_btc))
-          current_case = "full"
-          transaction_btc_amount = cheapest_sell_order.btc_amount
-          transaction_cost_in_eur = cheapest_sell_order.btc_amount * cheapest_sell_order.price_per_btc
-          
         # user can partially buy the cheapest sell order: Not enough eur.
-        elsif (current_user.eur_balance < (cheapest_sell_order.btc_amount * cheapest_sell_order.price_per_btc))
+        if (current_user.eur_balance < (cheapest_sell_order.btc_amount * cheapest_sell_order.price_per_btc))
           current_case = "lack_of_money"
           transaction_btc_amount = current_user.eur_balance / cheapest_sell_order.price_per_btc
           transaction_cost_in_eur = transaction_btc_amount * cheapest_sell_order.price_per_btc # =current_user balance
-
           
         # Last sell order contains more btc than current user need.
         elsif (btc_to_buy < cheapest_sell_order.btc_amount)
@@ -222,10 +237,12 @@ class OrdersController < ApplicationController
           transaction_btc_amount = btc_to_buy
           transaction_cost_in_eur = btc_to_buy * cheapest_sell_order.price_per_btc
 
+        # user can buy the full cheapest sell order
         else 
-          error_msg = ": Missing order case."
-          ve.add_string(error_msg)
-          return ve
+          current_case = "full"
+          transaction_btc_amount = cheapest_sell_order.btc_amount
+          transaction_cost_in_eur = cheapest_sell_order.btc_amount * cheapest_sell_order.price_per_btc
+
         end
 
         puts "> Transaction"
@@ -236,14 +253,10 @@ class OrdersController < ApplicationController
         # update seller balances
         seller = cheapest_sell_order.user   
         if (seller != current_user)
-          seller.btc_balance -= transaction_btc_amount
-          seller.eur_balance += transaction_cost_in_eur
-          seller.save
-
-          # update buyer balances
-          current_user.eur_balance -= transaction_cost_in_eur
-          current_user.btc_balance += transaction_btc_amount
-          current_user.save
+          
+          eur_credited_user = seller
+          btc_credited_user = current_user
+          update_users_balance(eur_credited_user, btc_credited_user, transaction_cost_in_eur, transaction_btc_amount)
         end
 
         # ******
@@ -342,17 +355,13 @@ class OrdersController < ApplicationController
         puts "  > transaction_btc_amount: " + transaction_btc_amount.to_s
         puts "  > transaction_cost_in_eur: " + transaction_cost_in_eur.to_s
 
-        # update buyer balances
         buyer = higher_buy_order.user   
-        if (buyer != current_user)
-          buyer.eur_balance -= transaction_cost_in_eur
-          buyer.btc_balance += transaction_btc_amount
-          buyer.save
 
-          # update buyer balances
-          current_user.btc_balance -= transaction_btc_amount
-          current_user.eur_balance += transaction_cost_in_eur
-          current_user.save
+        # we don't take fees if user buy btc to himself.
+        if (buyer != current_user)
+          eur_credited_user = current_user
+          btc_credited_user = buyer
+          update_users_balance(eur_credited_user, btc_credited_user)
         end
 
         # ******
@@ -396,5 +405,29 @@ class OrdersController < ApplicationController
       end
       return ve
     end
+
+    def update_users_balance(eur_credited_user, btc_credited_user, transaction_cost_in_eur, transaction_btc_amount)
+
+      # update market place balance
+      fee_user = User.find_by(email: "fee@user.com")
+      if (!fee_user.nil?)
+        total_fees_eur = Service.instance.round_btc(transaction_cost_in_eur * FEES)
+        fee_user.eur_balance += total_fees_eur
+        fee_user.save
+      else 
+        total_fees_eur = 0
+      end
+
+      # update buyer balance
+      btc_credited_user.eur_balance -= (transaction_cost_in_eur + total_fees_eur/2)
+      btc_credited_user.btc_balance += transaction_btc_amount
+      btc_credited_user.save
+
+      # update seller balance
+      eur_credited_user.btc_balance -= transaction_btc_amount
+      eur_credited_user.eur_balance += (transaction_cost_in_eur - total_fees_eur/2)
+      eur_credited_user.save
+    end
+
 
 end

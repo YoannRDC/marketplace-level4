@@ -1,15 +1,22 @@
 require "application_system_test_case"
 
 class OrdersTest < ApplicationSystemTestCase
+  driven_by :selenium, using: :chrome
+
   setup do
-    @order = orders(:one)
+    puts "@Start YR"
+    # current_user = users(:user_2)
+    @order = orders(:buy_order_0)
+    puts "@order YR"
   end
 
   test "visiting the index" do
+    puts "controller test done"
     visit orders_url
-    assert_selector "h1", text: "Orders"
+    assert_selector "h1", text: "Your orders"
+    puts "visiting the index YR"
   end
-
+=begin
   test "should create order" do
     visit orders_url
     click_on "New order"
@@ -36,4 +43,5 @@ class OrdersTest < ApplicationSystemTestCase
 
     assert_text "Order was successfully destroyed"
   end
+=end
 end

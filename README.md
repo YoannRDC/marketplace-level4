@@ -32,3 +32,18 @@ Instead of matching orders with exact values, orders can be defined with type ma
 A market place stats indicates every user balance (eur and btc), and the total platform balance (eur and btc). 
 This can be used to verify that euros and btc are correctly trnasfered, and that no eur or btc is created or lost during transactions. 
 
+# ********
+Level 3 completed.
+# ********
+
+The application take a 0.25% fee, debited equaly between the buyer avec the seller. It looks for a user with address fee@user.com and credit its eur_balance.
+
+To seed database:
+ -> Stop the server and rails consoles.
+ -> rake :drop:_unsafe
+ -> rails db:migrate
+ -> rails db:fixtures:load
+
+To launch the tests:
+ -> rails db:migrate RAILS_ENV=test (if needed)
+ -> rails test:all

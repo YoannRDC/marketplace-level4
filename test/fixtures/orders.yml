@@ -1,13 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  price: 9.99
-  btc: 9.99
-  side: 1
-  user: one
+# buy orders for user_1
+<% 3.times do |n| %>
+buy_order_<%= n %>:
+  price_per_btc: <%= 20000.00 - ((n+1)*1000) %>
+  btc_amount: 1
+  side: 0
+  user: user_1
+<% end %>
 
-two:
-  price: 9.99
-  btc: 9.99
+# sell orders
+<% 3.times do |n| %>
+sell_order_<%= n %>:
+  price_per_btc: <%= 20000.00 + ((n+1)*1000) %>
+  btc_amount: 1
   side: 1
-  user: two
+  user: user_1
+<% end %>
