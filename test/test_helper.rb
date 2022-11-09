@@ -1,10 +1,14 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
+require 'capybara/rails'
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
+
+  Capybara.server = :puma # Until your setup is working
+  Capybara.server = :puma, { Silent: true } # To clean up your test output
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all

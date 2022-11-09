@@ -1,4 +1,5 @@
 class MarketplaceController < ApplicationController
+
   def index
     @orders = Order.all.order('price_per_btc DESC')
 
