@@ -27,10 +27,10 @@ Instead of matching orders with exact values, orders can be defined with type ma
     -> The algorithm looks for the most expensive buyer btc and sells the btc to him. 
         -> Market order btc quantity cannot be higher than user btc balance. 
         -> If sell order btc quantity is more important than the buyer order btc quantiy, the algorithm execute the transaction and repeat with the next higher buyer.
-        -> If buy order btc quantity is lower than the buyer order btc quantity, the algorithm calculate what can be sell and execute the transaction.
+        -> If buy order btc quantity is lower than the buyer order btc quantity, the algorithm calculate what can be sold and execute the transaction.
 
 A market place stats indicates every user balance (eur and btc), and the total platform balance (eur and btc). 
-This can be used to verify that euros and btc are correctly trnasfered, and that no eur or btc is created or lost during transactions. 
+This can be used to verify that euros and btc are correctly transfered, and that no eur or btc is created or lost during transactions. 
 
 # ********
 Level 3 completed.
@@ -42,8 +42,9 @@ To seed database:
  -> Stop the server and rails consoles.
  -> rake :drop:_unsafe
  -> rails db:migrate
- -> rails db:fixtures:load
+ -> rails db:seed
 
 To launch the tests:
  -> rails db:migrate RAILS_ENV=test (if needed)
- -> rails test:all
+ -> rails test:model
+ -> Note: test-system not working. Browser launch but don't open the page. Investigation in progress.
