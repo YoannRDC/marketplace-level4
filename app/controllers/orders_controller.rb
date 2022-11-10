@@ -176,7 +176,7 @@ class OrdersController < ApplicationController
         end
       end
 
-      # assert user BTC balance is enough
+      # assert user BTC balance is enough to sell taht many BTC
       if (@order.side == 'sell')
 
         # btc for this order
@@ -196,13 +196,13 @@ class OrdersController < ApplicationController
       end
 
       # assert valid sell request
-      if (@order.side == "sell" && @order.price_per_btc <= request_sell_min_price ) 
+      if (@order.side == "sell" && @order.buy_type="request" && @order.price_per_btc <= request_sell_min_price ) 
         error_msg = ": Sell orders must be higher than highest 'buy' order price: " + request_buy_max_price.to_s
         ve.add_string(error_msg)
       end
 
       # assert valid buy request
-      if (@order.side == "buy" && @order.price_per_btc >= request_buy_max_price ) 
+      if (@order.side == "buy" && @order.buy_type == "request" && @order.price_per_btc >= request_buy_max_price ) 
         error_msg = ": Buy orders must be lower than lowest 'sell' order price: " + request_sell_min_price.to_s
         ve.add_string(error_msg)
       end
@@ -364,11 +364,14 @@ class OrdersController < ApplicationController
           ve.add_string(error_msg)
           return ve
         end
+        
+        total_fees_eur = transaction_cost_in_eur_without_fees * 0.0025
 
         puts "> Transaction"
         puts "  > current_case: " + current_case
         puts "  > transaction_btc_amount: " + transaction_btc_amount.to_s
         puts "  > transaction_cost_in_eur: " + transaction_cost_in_eur_without_fees.to_s
+        puts "  > fees: " + total_fees_eur.to_s
 
         buyer = higher_buy_order.user   
 
@@ -376,7 +379,7 @@ class OrdersController < ApplicationController
         if (buyer != current_user)
           eur_credited_user = current_user
           btc_credited_user = buyer
-          update_users_balance(eur_credited_user, btc_credited_user, fees)
+          update_users_balance(eur_credited_user, btc_credited_user, transaction_cost_in_eur_without_fees, transaction_btc_amount, total_fees_eur)
         end
 
         # ******
