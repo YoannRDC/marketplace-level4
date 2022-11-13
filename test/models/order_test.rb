@@ -6,16 +6,17 @@ class OrderTest < ActiveSupport::TestCase
     # buy orders
     buy_order_0 = orders(:buy_order_0)
     puts "buy_order_0: " + buy_order_0.to_s
-    assert buy_order_0.price_per_btc == 19000, "order_0 price per btc should be 19000."
-    assert buy_order_0.btc_amount == 1, "buy_order_0.btc_amount should be 1"
+    assert buy_order_0.coin == 'BTC', "order_0 coin should be BTC."
+    assert buy_order_0.price_per_coin == 19000, "order_0 price per coin should be 19000."
+    assert buy_order_0.coin_amount == 1, "buy_order_0.coin_amount should be 1"
     assert buy_order_0.side == 'buy', "order_0 side should be buy"
     
     buy_order_1 = orders(:buy_order_1)
-    assert buy_order_1.price_per_btc == 18000, "buy_order_1 per btc should be 18000."
+    assert buy_order_1.price_per_coin == 18000, "buy_order_1 per coin should be 18000."
 
     # sell orders
     sell_order_1 = orders(:sell_order_1)
-    assert sell_order_1.price_per_btc == 22000, "sell_order_1 per btc should be 22000."
+    assert sell_order_1.price_per_coin == 22000, "sell_order_1 per coin should be 22000."
    end
 
    test "buy order" do

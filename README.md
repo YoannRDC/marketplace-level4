@@ -46,7 +46,7 @@ To seed database:
 
 To launch the tests:
  -> rails db:migrate RAILS_ENV=test (if needed)
- -> rails test:model
+ -> rails test:models
  -> Note: test-system not working. Browser launch but don't open the page. Investigation in progress.
 
 # ********

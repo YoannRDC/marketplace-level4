@@ -47,7 +47,7 @@ end
     sell_request_order = Order.new
     sell_request_order.price_per_coin = 20000.00 + ((n+1)*1000)
     sell_request_order.coin = 'BTC'
-    sell_request_order.coin_amount = 1
+    sell_request_order.coin_amount = 2
     sell_request_order.side= 'sell'
     sell_request_order.user = User.find_by(email: "user1@user.com")
     sell_request_order.save!
@@ -70,7 +70,7 @@ end
     sell_request_order = Order.new
     sell_request_order.price_per_coin = 1000.00 + ((n+1)*100)
     sell_request_order.coin = 'ETH'
-    sell_request_order.coin_amount = 1
+    sell_request_order.coin_amount = 2
     sell_request_order.side= 'sell'
     sell_request_order.user = User.find_by(email: "user1@user.com")
     sell_request_order.save!

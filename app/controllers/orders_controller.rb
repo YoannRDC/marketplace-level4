@@ -210,21 +210,21 @@ class OrdersController < ApplicationController
         end
       end
 
-      # assert user coin balance is enough to sell taht many coin
+      # assert user coin balance is enough to sell that many coin
       if (@order.side == 'sell')
 
         # coin for this order
         sell_orders_coin_sum = @order.coin_amount
 
         # Sum of coin for previous orders.
-        created_user_orders = Order.where(user:current_user, side:'sell', state:'created', buy_type: 'request')
+        created_user_orders = Order.where(user:current_user, side:'sell', state:'created', buy_type: 'request', coin:@order.coin)
         created_user_orders.each do |order|
           sell_orders_coin_sum += order.coin_amount
         end
         logger.debug "@sell_orders_coin_sum: #{sell_orders_coin_sum}"
 
         if user_coin_balance < sell_orders_coin_sum
-          error_msg = ": Your total request order balance would exceed your balance. Orders sum:" + sell_orders_coin_sum.to_s
+          error_msg = ": Your total request order balance would exceed your coin balance. Orders sum:" + sell_orders_coin_sum.to_s
           ve.add_string(error_msg)
         end
       end

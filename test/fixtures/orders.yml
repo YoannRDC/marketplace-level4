@@ -3,8 +3,9 @@
 # buy orders for user_1
 <% 3.times do |n| %>
 buy_order_<%= n %>:
-  price_per_btc: <%= 20000.00 - ((n+1)*1000) %>
-  btc_amount: 1
+  coin: 'BTC'
+  price_per_coin: <%= 20000.00 - ((n+1)*1000) %>
+  coin_amount: 1
   side: 0
   user: user_1
 <% end %>
@@ -12,8 +13,9 @@ buy_order_<%= n %>:
 # sell orders
 <% 3.times do |n| %>
 sell_order_<%= n %>:
-  price_per_btc: <%= 20000.00 + ((n+1)*1000) %>
-  btc_amount: 1
+  coin: 'BTC'
+  price_per_coin: <%= 20000.00 + ((n+1)*1000) %>
+  coin_amount: 1
   side: 1
   user: user_1
 <% end %>
