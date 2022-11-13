@@ -24,32 +24,53 @@ fee_user.save!
     user = User.new
     user.email = 'user' + (n+1).to_s + '@user.com'
     user.btc_balance = 3.0
+    user.eth_balance = 5.0
     user.eur_balance = 100000.0
     user.password = 'password'
     user.password_confirmation = 'password'
     user.save!
 end
 
-user_test = User.find_by(email: 'user1@user.com')
-puts "user_test.eur_balance:" + user_test.eur_balance.to_s
-puts "user_test.encrypted_password:" + user_test.encrypted_password
-
-
-# buy orders for user_1
+# BTC buy orders for user_1
 3.times do |n|
     buy_request_order = Order.new
-    buy_request_order.price_per_btc = 20000.00 - ((n+1)*1000)
-    buy_request_order.btc_amount = 1
+    buy_request_order.price_per_coin = 20000.00 - ((n+1)*1000)
+    buy_request_order.coin = 'BTC'
+    buy_request_order.coin_amount = 1
     buy_request_order.side= 'buy'
     buy_request_order.user = User.find_by(email: "user1@user.com")
     buy_request_order.save!
 end
 
-# sell orders for user_1
+# BTC sell orders for user_1
 3.times do |n|
     sell_request_order = Order.new
-    sell_request_order.price_per_btc = 20000.00 + ((n+1)*1000)
-    sell_request_order.btc_amount = 1
+    sell_request_order.price_per_coin = 20000.00 + ((n+1)*1000)
+    sell_request_order.coin = 'BTC'
+    sell_request_order.coin_amount = 1
+    sell_request_order.side= 'sell'
+    sell_request_order.user = User.find_by(email: "user1@user.com")
+    sell_request_order.save!
+end
+
+
+# ETH buy orders for user_1
+3.times do |n|
+    buy_request_order = Order.new
+    buy_request_order.price_per_coin = 1000.00 - ((n+1)*100)
+    buy_request_order.coin = 'ETH'
+    buy_request_order.coin_amount = 1
+    buy_request_order.side= 'buy'
+    buy_request_order.user = User.find_by(email: "user1@user.com")
+    buy_request_order.save!
+end
+
+# ETH sell orders for user_1
+3.times do |n|
+    sell_request_order = Order.new
+    sell_request_order.price_per_coin = 1000.00 + ((n+1)*100)
+    sell_request_order.coin = 'ETH'
+    sell_request_order.coin_amount = 1
     sell_request_order.side= 'sell'
     sell_request_order.user = User.find_by(email: "user1@user.com")
     sell_request_order.save!

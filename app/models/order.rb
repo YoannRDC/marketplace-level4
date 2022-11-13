@@ -3,4 +3,5 @@ class Order < ApplicationRecord
   enum :side, [:buy, :sell]
   enum :state, [:created, :filled]
   enum :buy_type, [:request, :market]
+  enum :coin, [:BTC, :ETH]
 end

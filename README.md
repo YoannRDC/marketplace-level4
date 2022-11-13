@@ -48,3 +48,10 @@ To launch the tests:
  -> rails db:migrate RAILS_ENV=test (if needed)
  -> rails test:model
  -> Note: test-system not working. Browser launch but don't open the page. Investigation in progress.
+
+# ********
+Level 4 completed.
+# ********
+
+Users can buy and sell ETH.
+Min unit of BTC is 0.00000001 ETH, same as BTC.

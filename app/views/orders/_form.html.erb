@@ -21,16 +21,20 @@
     <%= f.select :buy_type, ["request", "market"] %>
   </div>
   <br>
-
   <div class="field">
-    <%= f.label :price_per_btc %> :
-    <%= f.number_field :price_per_btc, autofocus: true, autocomplete: "price per btc", in: 0.01..999999999.99, step: 0.01 %>
+    <%= f.label :coin %> :
+    <%= f.select :coin, ["BTC", "ETH"] %>
+  </div>
+  <br>
+  <div class="field">
+    <%= f.label :price_per_coin %> :
+    <%= f.number_field :price_per_coin, autofocus: true, autocomplete: "price per coin", in: 0.01..999999999.99, step: 0.01 %>
     Note: useless if 'buy type' is market (put any value).
   </div>
   <br>
   <div class="field">
-    <%= f.label :btc_amount %> :
-    <%= f.number_field :btc_amount, autofocus: true, autocomplete: "btc amount", in: 0.00000001..9999999.99999999, step: 0.00000001 %>
+    <%= f.label :coin_amount %> :
+    <%= f.number_field :coin_amount, autofocus: true, autocomplete: "coin amount", in: 0.00000001..9999999.99999999, step: 0.00000001 %>
   </div>
   <br>
   <div>

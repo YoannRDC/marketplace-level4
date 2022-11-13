@@ -6,8 +6,9 @@
         <thead>
         <tr>
             <th>Side</th>
+            <th>Coin</th>
             <th>Price</th>
-            <th>Amount of BTC</th>
+            <th>Amount of Coin</th>
             <th>Details</th>
             <th>Date of creation</th>
         </tr>
@@ -16,8 +17,9 @@
         <% @orders_request.each do |order| %> 
             <tr>
                 <td><%= order.side %></td>
-                <td><%= order.price_per_btc %></td>
-                <td><%= order.btc_amount %></td>
+                <td><%= order.coin %></td>
+                <td><%= order.price_per_coin %></td>
+                <td><%= order.coin_amount %></td>
                 <td><%= link_to "View order", order %></td>
                 <td><%= order.created_at %></td>
             </tr>
@@ -33,8 +35,9 @@
         <thead>
         <tr>
             <th>Side</th>
+            <th>Coin</th>
             <th>Price</th>
-            <th>Amount of BTC</th>
+            <th>Amount of coin</th>
             <th>Date of creation</th>
         </tr>
         </thead>
@@ -42,8 +45,9 @@
         <% @orders_request.each do |order| %> 
             <tr>
                 <td><%= order.side %></td>
-                <td><%= order.price_per_btc %></td>
-                <td><%= order.btc_amount %></td>
+                <td><%= order.coin %></td>
+                <td><%= order.price_per_coin %></td>
+                <td><%= order.coin_amount %></td>
                 <td><%= order.created_at %></td>
             </tr>
         <% end %>

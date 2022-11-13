@@ -1,67 +1,143 @@
-<h1 class="text-center">Market place</h1>
 
+<h1 class="text-center markettitle">Market place</h1>
+
+<br><br><br>
+<!-- BTC left side -->
 <div class="container">
-    <h1>Sell orders</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Side</th>
-            <th>Price</th>
-            <th>Amount of BTC</th>
-            <th>User email</th>
-            <th>Date of creation</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @sells.each do |order| %> 
-            <tr>
-                <td><%= order.side %></td>
-                <td><%= order.price_per_btc %></td>
-                <td><%= order.btc_amount %></td>
-                <td><%= order.user.email %></td>
-                <td><%= order.updated_at %></td>
-            </tr>
-        <% end %>
-        </tbody>
-    </table>
-</div>
+    <div class="row">
+        <div class="col-sm">
+            <div class="container">
+                <h1 class="cointitle">Bitcoin</h1>
+                <h2>Sell orders</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Side</th>
+                        <th>Coin</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>User email</th>
+                        <th>Date of creation</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% @sells_btc.each do |order| %> 
+                        <tr>
+                            <td><%= order.side %></td>
+                            <td><%= order.coin %></td>
+                            <td><%= order.price_per_coin %></td>
+                            <td><%= order.coin_amount %></td>
+                            <td><%= order.user.email %></td>
+                            <td><%= order.updated_at %></td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+            </div>
+            <h2 class="text-center">BTC average order price: <%= @avg_price_btc%> </h2>
 
-<h2 class="text-center">Average order price: <%= @avg_price%> </h2>
+            <div class="container">
+                <h2>Buy orders</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Side</th>
+                        <th>Coin</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>User email</th>
+                        <th>Date of creation</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% @buys_btc.each do |order| %> 
+                        <tr>
+                            <td><%= order.side %></td>
+                            <td><%= order.coin %></td>
+                            <td><%= order.price_per_coin %></td>
+                            <td><%= order.coin_amount %></td>
+                            <td><%= order.user.email %></td>
+                            <td><%= order.updated_at %></td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<div class="container">
-    <h1>Buy orders</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Side</th>
-            <th>Price</th>
-            <th>Amount of BTC</th>
-            <th>User email</th>
-            <th>Date of creation</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @buys.each do |order| %> 
-            <tr>
-                <td><%= order.side %></td>
-                <td><%= order.price_per_btc %></td>
-                <td><%= order.btc_amount %></td>
-                <td><%= order.user.email %></td>
-                <td><%= order.updated_at %></td>
-            </tr>
-        <% end %>
-        </tbody>
-    </table>
+        <!-- ETH right side -->
+        <div class="col-sm">
+            <div class="container">
+                <h1 class="cointitle">Ethereum</h1>
+                <h2>Sell orders</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Side</th>
+                        <th>Coin</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>User email</th>
+                        <th>Date of creation</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% @sells_eth.each do |order| %> 
+                        <tr>
+                            <td><%= order.side %></td>
+                            <td><%= order.coin %></td>
+                            <td><%= order.price_per_coin %></td>
+                            <td><%= order.coin_amount %></td>
+                            <td><%= order.user.email %></td>
+                            <td><%= order.updated_at %></td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="text-center">ETH average order price: <%= @avg_price_eth %> </h2>
+
+            <div class="container">
+                <h2>Buy orders</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Side</th>
+                        <th>Coin</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>User email</th>
+                        <th>Date of creation</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% @buys_eth.each do |order| %> 
+                        <tr>
+                            <td><%= order.side %></td>
+                            <td><%= order.coin %></td>
+                            <td><%= order.price_per_coin %></td>
+                            <td><%= order.coin_amount %></td>
+                            <td><%= order.user.email %></td>
+                            <td><%= order.updated_at %></td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-<br>
+<br><br>
 <div class="container">
     <h1>Filled orders</h1>
     <table class="table">
         <thead>
         <tr>
             <th>Side</th>
+            <th>Coin</th>
             <th>Price</th>
-            <th>Amount of BTC</th>
+            <th>Amount</th>
             <th>Buy type</th>
             <th>User email</th>
             <th>Date of creation</th>
@@ -71,8 +147,9 @@
         <% @filled.each do |order| %> 
             <tr>
                 <td><%= order.side %></td>
-                <td><%= order.price_per_btc %></td>
-                <td><%= order.btc_amount %></td>
+                <td><%= order.coin %></td>
+                <td><%= order.price_per_coin %></td>
+                <td><%= order.coin_amount %></td>
                 <td><%= order.buy_type %></td>
                 <td><%= order.user.email %></td>
                 <td><%= order.updated_at %></td>
@@ -88,18 +165,18 @@
         <thead>
         <tr>
             <th>User</th>
-            <th>Value [EUR : BTC]</th>
+            <th>Value [EUR : BTC : ETH]</th>
         </tr>
         </thead>
         <tbody>
             <tr>
                 <td> Total (Market place)</td>
-                <td><%= @total_market_eur %> : <%= @total_market_btc %></td>
+                <td><%= @total_market_eur %> : <%= @total_market_btc %> : <%= @total_market_eth %></td>
             </tr>          
             <% @users.each do |user| %> 
                 <tr>
                     <td><%= user.email %> balance</td>
-                    <td><%= user.eur_balance %> : <%= user.btc_balance %></td>
+                    <td><%= user.eur_balance %> : <%= user.btc_balance %> : <%= user.eth_balance %></td>
                 </tr>
             <% end %>
         </tbody>
